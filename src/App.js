@@ -38,7 +38,7 @@ function Score(props) {
  */
 function AnswerButton(props) {
   return (
-    <button>{props.label}</button>
+    <button onClick={() => props.checkAnswer()}>{props.label}</button>
   )
 }
 
@@ -70,16 +70,19 @@ function MentalMathGame(props) {
         value1={props.value1}
         value2={props.value2}
         value3={props.value3}
-        proposedAnswer={props.proposedAnswer}
-      />
+        proposedAnswer={props.proposedAnswer} />
 
-      <AnswerButton label={"True"} />
+      <AnswerButton
+        label={"True"}
+        checkAnswer={props.isTrueCorrect} />
+      {/* // checkTrue={() => props.addPoint()} /> */}
+      {/* // checkTrue={() => console.log('Clicked True')} /> */}
+
       <AnswerButton label={"False"} />
 
       <Score
         numCorrect={props.numCorrect}
-        numQuestions={props.numQuestions}
-      />
+        numQuestions={props.numQuestions} />
 
     </div>
   )
@@ -121,13 +124,12 @@ class App extends Component {
 
       value1: this.generateRandomValue(),
       value2: this.generateRandomValue(),
-      value3: this.generateRandomValue(),
-
-      // cannot create proposed answer as part of the state yet, as it depends on the values above
-      // proposedAnswer: Math.floor(Math.random() * 3) + this.value1 + this.value2 + this.value3
+      value3: this.generateRandomValue()
     }
 
-    // now add the proposed answer to the state created above
+    // now, add the proposed answer
+    // note, `proposedAnswer` can NOT be added together, above
+    // ... as it depends on the values already being existent
     this.state = {
       ...this.state,
       proposedAnswer: this.generateProposedAnswer()
@@ -139,12 +141,49 @@ class App extends Component {
   /*
    * generates a random value between 0 and 100, not inclusive of limits 
    */
-  generateRandomValue = () => Math.floor(Math.random() * 100);
+  generateRandomValue = () => {
+    return Math.floor(Math.random() * 100);
+  }
+
+  /*
+   * returns the actual sum of the equation
+   */
+  getActualAnswer = () => {
+    return this.state.value1 + this.state.value2 + this.state.value3;
+  }
 
   /*
    * generates an answer by adding a random value, between 0 and 3, to the sum of the equation
    */
-  generateProposedAnswer = () => Math.floor(Math.random() * 3) + this.state.value1 + this.state.value2 + this.state.value3;
+  generateProposedAnswer = () => {
+    // return this.getActualAnswer();
+    return Math.floor(Math.random() * 3) + this.getActualAnswer(); 
+  }
+
+  /*
+   * add a point to the state
+   */
+  addPoint = () => {
+    this.setState(state => ({
+      numCorrect: state.numCorrect + 1
+    }))
+
+
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! REMOVE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    console.log("just added a point to the state and it is " + this.state.numCorrect);
+  }
+
+  /*
+   * checks to see if button true is correct
+   */
+  isTrueCorrect = () => {
+    if (this.getActualAnswer() === this.generateProposedAnswer()) {
+      this.addPoint();
+
+      // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! REMOVE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      console.log("just added point");
+    }
+  }
 
 
 
@@ -161,9 +200,15 @@ class App extends Component {
           value1={this.state.value1}
           value2={this.state.value2}
           value3={this.state.value3}
+          actualAnswer={this.getActualAnswer}
           proposedAnswer={this.state.proposedAnswer}
           numCorrect={this.state.numCorrect}
           numQuestions={this.state.numQuestions}
+          addPoint={this.addPoint}
+
+
+          // need to remove this if necessary !?????
+          isTrueCorrect={this.isTrueCorrect}
         />
 
       </div>
