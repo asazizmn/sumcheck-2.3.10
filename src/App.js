@@ -76,14 +76,10 @@ function MentalMathGame(props) {
       <AnswerButton label={"True"} />
       <AnswerButton label={"False"} />
 
-      {/* <Score
+      <Score
         numCorrect={props.numCorrect}
         numQuestions={props.numQuestions}
-      /> */}
-
-      <p className="text">
-        Your Score: {props.numCorrect}/{props.numQuestions}
-      </p>
+      />
 
     </div>
   )
