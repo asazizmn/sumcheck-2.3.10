@@ -135,19 +135,6 @@ class App extends Component {
 
   }
 
-  // state to be handled by react
-  // will allow ui to be rendered automatically upon change
-  // state = {
-  //   numQuestions: 0,
-  //   numCorrect: 0,
-
-  //   value1: 0,
-  //   value2: 0,
-  //   value3: 0,
-
-  //   proposedAnswer: 0
-  // }
-
 
   /*
    * generates a random value between 0 and 100, not inclusive of limits 
@@ -158,31 +145,6 @@ class App extends Component {
    * generates an answer by adding a random value, between 0 and 3, to the sum of the equation
    */
   generateProposedAnswer = () => Math.floor(Math.random() * 3) + this.state.value1 + this.state.value2 + this.state.value3;
-
-  /*
-   * this simply returns the question part of the equation, without saving it in the state
-   
-  returnExpression = () => ({
-    value1: this.generateRandomValue(),
-    value2: this.generateRandomValue(),
-    value3: this.generateRandomValue()
-  })*/
-
-  /*
-   * this simply returns the question part of the equation, without saving it in the state
-   
-  returnTerm = () => ({
-    proposedAnswer: this.generatePropsedAnswer()
-  })*/
-
-  /*
-   * generate the equation and save it in the state
-   
-  generateEquation = () => {
-    this.setState(this.returnEquation());
-  }*/
-
-
 
 
 
