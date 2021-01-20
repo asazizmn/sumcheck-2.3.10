@@ -190,8 +190,8 @@ class App extends Component {
   setProposedAnswer = () => {
 
     this.setState({
-      // proposedAnswer: Math.floor(Math.random() * 3) + getActualAnswer(this.state)
-      proposedAnswer: this.getActualAnswer()
+      proposedAnswer: Math.floor(Math.random() * 3) + this.getActualAnswer()
+      // proposedAnswer: this.getActualAnswer()
     })
   }
 
