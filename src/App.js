@@ -33,6 +33,7 @@ function Score(props) {
 }
 
 
+
 /**
  * Button component that is provided text as label
  */
@@ -41,6 +42,7 @@ function AnswerButton(props) {
     <button onClick={() => props.checkAnswer()}>{props.label}</button>
   )
 }
+
 
 
 /**
@@ -54,6 +56,7 @@ function Equation(props) {
     </div>
   )
 }
+
 
 
 /**
@@ -75,8 +78,8 @@ function MentalMathGame(props) {
       <AnswerButton
         label={"True"}
         checkAnswer={props.isTrueCorrect} />
-      {/* // checkTrue={() => props.addPoint()} /> */}
-      {/* // checkTrue={() => console.log('Clicked True')} /> */}
+      {/* checkTrue={() => props.addPoint()}
+        checkTrue={() => console.log('Clicked True')} */}
 
       <AnswerButton label={"False"} />
 
@@ -87,6 +90,7 @@ function MentalMathGame(props) {
     </div>
   )
 }
+
 
 
 /**
@@ -100,6 +104,7 @@ function TopHeader(props) {
     </header>
   )
 }
+
 
 
 /**
@@ -122,28 +127,53 @@ class App extends Component {
       numQuestions: 0,
       numCorrect: 0,
 
-      value1: this.generateRandomValue(),
-      value2: this.generateRandomValue(),
-      value3: this.generateRandomValue()
-    }
+      // generate and then initialise the random values
+      value1: this.getRandomValue(),
+      value2: this.getRandomValue(),
+      value3: this.getRandomValue(),
 
-    // now, add the proposed answer
-    // note, `proposedAnswer` can NOT be added together, above
-    // ... as it depends on the values already being existent
-    this.state = {
-      ...this.state,
-      proposedAnswer: this.generateProposedAnswer()
+      proposedAnswer: 0
     }
+  }
 
+
+  /*
+   * `setState` should not be called within the constructor above
+   * however, it is possible to use `componentDidMount` instead
+   * remember that this method is where you run statements like
+   * ... calling an API, to load data, as it is first called after render()
+   * 
+   * here we are using it to generate a proposed answer
+   * please note that it could NOT be generated directly in the constrcutor above
+   * ... with the values, as it depends on the values already being existent
+   */
+  componentDidMount() {
+    this.setProposedAnswer();
+  }
+
+
+  /*
+   * generates and returns a random number with the default max value of '100'
+   * however, it's possible to change max by providing a different argument number
+   */
+  getRandomValue = (max = 100) => {
+    return Math.floor(Math.random() * max);
   }
 
 
   /*
    * generates a random value between 0 and 100, not inclusive of limits 
+   * and sets it in the state
    */
-  generateRandomValue = () => {
-    return Math.floor(Math.random() * 100);
+  setRandomValue = (name) => {
+
+    // generate a new random value and set it to state
+    this.setState({
+      // please note that `[fooName]` is new syntax in ES6 for dynamic property names
+      [name]: this.getRandomValue()
+    });
   }
+
 
   /*
    * returns the actual sum of the equation
@@ -152,12 +182,17 @@ class App extends Component {
     return this.state.value1 + this.state.value2 + this.state.value3;
   }
 
+
   /*
    * generates an answer by adding a random value, between 0 and 3, to the sum of the equation
+   * and then returns it for use
    */
-  generateProposedAnswer = () => {
-    // return this.getActualAnswer();
-    return Math.floor(Math.random() * 3) + this.getActualAnswer(); 
+  setProposedAnswer = () => {
+
+    this.setState({
+      // proposedAnswer: Math.floor(Math.random() * 3) + getActualAnswer(this.state)
+      proposedAnswer: this.getActualAnswer()
+    })
   }
 
   /*
@@ -176,25 +211,37 @@ class App extends Component {
   /*
    * checks to see if button true is correct
    */
-  isTrueCorrect = () => {
-    if (this.getActualAnswer() === this.generateProposedAnswer()) {
+  checkTrue = () => {
+    if (this.getActualAnswer() === this.state.proposedAnswer) {
       this.addPoint();
 
       // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! REMOVE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       console.log("just added point");
     }
+
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! REMOVE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    else console.log('What going on', '???');
   }
 
 
-
+  /*
+   * the UI method called everytime the state changes
+   *
+   * it should be pure 
+   * ... avoid modifying state directly
+   * ... and return the same result with every invoke
+   * 
+   * please note that it should not directly call `setState`
+   * ... as it makes it a contender for producing infinite loops
+   */
   render() {
     return (
       <div className="App">
 
         <TopHeader
           logo={logo}
-          title={'ReactND - Coding Practice'}
-        />
+          title={'ReactND - Coding Practice'} />
+
 
         <MentalMathGame
           value1={this.state.value1}
@@ -208,8 +255,7 @@ class App extends Component {
 
 
           // need to remove this if necessary !?????
-          isTrueCorrect={this.isTrueCorrect}
-        />
+          isTrueCorrect={this.checkTrue} />
 
       </div>
     );
