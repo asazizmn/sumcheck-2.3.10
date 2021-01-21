@@ -74,7 +74,7 @@ class App extends Component {
 
 
   /*
-   * generate the terms and prop0sed answer
+   * generate the terms and proposed answer
    */
   generateEquationValues = () => {
     const value1 = this.getRandomValue(100);
