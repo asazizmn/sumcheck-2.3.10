@@ -1,5 +1,7 @@
 import React from 'react';
-
+import Score from './Score';
+import AnswerButton from './AnswerButton';
+import Equation from './Equation';
 
 
 /**
