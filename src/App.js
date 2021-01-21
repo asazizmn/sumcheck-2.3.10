@@ -150,10 +150,9 @@ class App extends Component {
 
 
   /*
-   * generates and returns a random number with the default max value of '100'
-   * however, it's possible to change max by providing a different argument number
+   * generates and returns a random number with the max value equalling the argument
    */
-  getRandomValue = (max = 100) => {
+  getRandomValue = (max) => {
     return Math.floor(Math.random() * max);
   }
 
@@ -167,37 +166,24 @@ class App extends Component {
 
 
   /*
-   * generates an answer by adding a random value, between 0 and 3, to the sum of the equation
-   * and then returns it for use
-   */
-  setProposedAnswer = () => {
-    this.setState({
-      proposedAnswer: Math.floor(Math.random() * 3) + this.getActualAnswer()
-      // proposedAnswer: this.getActualAnswer() // remove !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    })
-  }
-
-
-  /*
    * generates random values for the equation
    * and stores the values in the state
    */
   setEquationValues = () => {
-    this.setState(
 
-      // firstly set random values for the terms
-      {
-        value1: this.getRandomValue(),
-        value2: this.getRandomValue(),
-        value3: this.getRandomValue()
-      },
+    // generate the equation
+    const value1 = this.getRandomValue(100);
+    const value2 = this.getRandomValue(100);
+    const value3 = this.getRandomValue(100);
+    const proposedAnswer = this.getRandomValue(3) + value1 + value2 + value3;
 
-      // thereafter, set the proposed answer based on the values above
-      // pls note that this provided callback is executed AFTER the values are set above
-      () => {
-        this.setProposedAnswer();
-      }
-    )
+    // now set it in the state
+    this.setState({
+      value1: value1,
+      value2: value2,
+      value3: value3,
+      proposedAnswer: proposedAnswer
+    })
   }
 
 
