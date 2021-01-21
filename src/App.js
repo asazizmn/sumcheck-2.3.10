@@ -260,7 +260,6 @@ class App extends Component {
           logo={logo}
           title={'ReactND - Coding Practice'} />
 
-
         <MentalMathGame
           value1={this.state.value1}
           value2={this.state.value2}
