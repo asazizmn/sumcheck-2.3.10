@@ -265,11 +265,11 @@ class App extends Component {
           value1={this.state.value1}
           value2={this.state.value2}
           value3={this.state.value3}
-          actualAnswer={this.getActualAnswer}
+          // actualAnswer={this.getActualAnswer}
           proposedAnswer={this.state.proposedAnswer}
           numCorrect={this.state.numCorrect}
           numQuestions={this.state.numQuestions}
-          addPoint={this.addPoint}
+          // addPoint={this.addPoint}
           isTrue={this.isTrue}
           isFalse={this.isFalse} />
 
