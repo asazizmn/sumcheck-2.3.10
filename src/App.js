@@ -1,22 +1,6 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { render } from 'react-dom';
-
-
-
-// random whole numbers, generated between 0 - 99
-// const value1 = Math.floor(Math.random() * 100);
-// const value2 = Math.floor(Math.random() * 100);
-// const value3 = Math.floor(Math.random() * 100);
-
-// real answer plus a random number between 0 - 2
-// leaving the probability of correctness to 1/3
-// const proposedAnswer = Math.floor(Math.random() * 3) + value1 + value2 + value3;
-
-// default number of questions and answers
-// const numQuestions = 0;
-// const numCorrect = 0;
 
 
 
@@ -157,20 +141,6 @@ class App extends Component {
   getRandomValue = (max = 100) => {
     return Math.floor(Math.random() * max);
   }
-
-
-  /*
-   * generates a random value between 0 and 100, not inclusive of limits 
-   * and sets it in the state
-   
-  setRandomValue = (name) => {
-
-    // generate a new random value and set it to state
-    this.setState({
-      // please note that `[fooName]` is new syntax in ES6 for dynamic property names
-      [name]: this.getRandomValue()
-    });
-  }*/
 
 
   /*
