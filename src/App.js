@@ -74,10 +74,15 @@ class App extends Component {
 
 
   /*
-   * returns the actual sum of the equation
+   * generate the terms and prop0sed answer
    */
-  getActualAnswer = () => {
-    return this.state.value1 + this.state.value2 + this.state.value3;
+  generateEquationValues = () => {
+    const value1 = this.getRandomValue(100);
+    const value2 = this.getRandomValue(100);
+    const value3 = this.getRandomValue(100);
+    const proposedAnswer = this.getRandomValue(3) + value1 + value2 + value3;
+
+    return [value1, value2, value3, proposedAnswer];
   }
 
 
@@ -86,19 +91,14 @@ class App extends Component {
    * and stores the values in the state
    */
   setEquationValues = () => {
-
-    // generate the equation
-    const value1 = this.getRandomValue(100);
-    const value2 = this.getRandomValue(100);
-    const value3 = this.getRandomValue(100);
-    const proposedAnswer = this.getRandomValue(3) + value1 + value2 + value3;
+    const values = this.generateEquationValues();
 
     // now set it in the state
     this.setState({
-      value1: value1,
-      value2: value2,
-      value3: value3,
-      proposedAnswer: proposedAnswer
+      value1: values[0],
+      value2: values[1],
+      value3: values[2],
+      proposedAnswer: values[3]
     })
   }
 
@@ -122,6 +122,13 @@ class App extends Component {
     }))
   }
 
+
+  /*
+   * returns the actual sum of the equation
+   */
+  getActualAnswer = () => {
+    return this.state.value1 + this.state.value2 + this.state.value3;
+  }
 
   /*
    * checks to see if button true is correct
