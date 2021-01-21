@@ -77,11 +77,11 @@ function MentalMathGame(props) {
 
       <AnswerButton
         label={"True"}
-        checkAnswer={props.isTrueCorrect} />
-      {/* checkTrue={() => props.addPoint()}
-        checkTrue={() => console.log('Clicked True')} */}
+        checkAnswer={props.isTrue} />
 
-      <AnswerButton label={"False"} />
+      <AnswerButton 
+        label={"False"}
+        checkAnswer={props.isFalse} />
 
       <Score
         numCorrect={props.numCorrect}
@@ -114,7 +114,8 @@ class App extends Component {
 
   /*
    * create new app state
-   * ... please note that setState is not to be called in the constructor
+   * ... please note that `setState` is not to be called in the constructor
+   * ... instead, use `this.state` directly
    * 
    * also note that the constructor is only run once, 
    * ... when the component is first created
@@ -122,15 +123,13 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    // create new state
     this.state = {
       numQuestions: 0,
       numCorrect: 0,
 
-      // generate and then initialise the random values
-      value1: this.getRandomValue(),
-      value2: this.getRandomValue(),
-      value3: this.getRandomValue(),
+      value1: 0,
+      value2: 0,
+      value3: 0,
 
       proposedAnswer: 0
     }
@@ -138,17 +137,16 @@ class App extends Component {
 
 
   /*
-   * `setState` should not be called within the constructor above
-   * however, it is possible to use `componentDidMount` instead
-   * remember that this method is where you run statements like
+   * this method is executed after the first render
+   * it can be used to run statements like
    * ... calling an API, to load data, as it is first called after render()
    * 
    * here we are using it to generate a proposed answer
-   * please note that it could NOT be generated directly in the constrcutor above
-   * ... with the values, as it depends on the values already being existent
+   * pls note that it could NOT be generated along with the values altogether
+   * ... as it depends on the values already being pre-existent
    */
   componentDidMount() {
-    this.setProposedAnswer();
+    this.setEquationValues();
   }
 
 
@@ -164,7 +162,7 @@ class App extends Component {
   /*
    * generates a random value between 0 and 100, not inclusive of limits 
    * and sets it in the state
-   */
+   
   setRandomValue = (name) => {
 
     // generate a new random value and set it to state
@@ -172,7 +170,7 @@ class App extends Component {
       // please note that `[fooName]` is new syntax in ES6 for dynamic property names
       [name]: this.getRandomValue()
     });
-  }
+  }*/
 
 
   /*
@@ -188,12 +186,35 @@ class App extends Component {
    * and then returns it for use
    */
   setProposedAnswer = () => {
-
     this.setState({
       proposedAnswer: Math.floor(Math.random() * 3) + this.getActualAnswer()
-      // proposedAnswer: this.getActualAnswer()
+      // proposedAnswer: this.getActualAnswer() // remove !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     })
   }
+
+
+  /*
+   * generates random values for the equation
+   * and stores the values in the state
+   */
+  setEquationValues = () => {
+    this.setState(
+
+      // firstly set random values for the terms
+      {
+        value1: this.getRandomValue(),
+        value2: this.getRandomValue(),
+        value3: this.getRandomValue()
+      },
+
+      // thereafter, set the proposed answer based on the values above
+      // pls note that this provided callback is executed AFTER the values are set above
+      () => {
+        this.setProposedAnswer();
+      }
+    )
+  }
+
 
   /*
    * add a point to the state
@@ -202,25 +223,22 @@ class App extends Component {
     this.setState(state => ({
       numCorrect: state.numCorrect + 1
     }))
-
-
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! REMOVE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    console.log("just added a point to the state and it is " + this.state.numCorrect);
   }
+
 
   /*
    * checks to see if button true is correct
    */
-  checkTrue = () => {
-    if (this.getActualAnswer() === this.state.proposedAnswer) {
-      this.addPoint();
-
-      // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! REMOVE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-      console.log("just added point");
-    }
-
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! REMOVE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    else console.log('What going on', '???');
+  isTrue = () => {
+    this.getActualAnswer() === this.state.proposedAnswer && this.addPoint();
+  }
+  
+  
+  /*
+   * checks to see if button false is correct
+   */
+  isFalse = () => {
+    this.getActualAnswer() !== this.state.proposedAnswer && this.addPoint();
   }
 
 
@@ -252,10 +270,8 @@ class App extends Component {
           numCorrect={this.state.numCorrect}
           numQuestions={this.state.numQuestions}
           addPoint={this.addPoint}
-
-
-          // need to remove this if necessary !?????
-          isTrueCorrect={this.checkTrue} />
+          isTrue={this.isTrue}
+          isFalse={this.isFalse} />
 
       </div>
     );
