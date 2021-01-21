@@ -104,20 +104,35 @@ class App extends Component {
    * also note that the constructor is only run once, 
    * ... when the component is first created
    */
-  constructor(props) {
-    super(props);
+  // constructor(props) {
+  //   super(props);
 
-    this.state = {
-      numQuestions: 0,
-      numCorrect: 0,
+  //   this.state = {
+  //     numQuestions: 0,
+  //     numCorrect: 0,
 
-      value1: 0,
-      value2: 0,
-      value3: 0,
+  //     value1: 0,
+  //     value2: 0,
+  //     value3: 0,
 
-      proposedAnswer: 0
-    }
+  //     proposedAnswer: 0
+  //   }
+  // }
+
+
+  // using the ESnext field declarations proposal syntax
+  // ... in order to write less code
+  state = {
+    numQuestions: 0,
+    numCorrect: 0,
+
+    value1: 0,
+    value2: 0,
+    value3: 0,
+
+    proposedAnswer: 0
   }
+
 
 
   /*
@@ -197,11 +212,22 @@ class App extends Component {
 
 
   /*
+   * increase the number of questions answered, by 1
+   */
+  addQuestionsAnswered = () => {
+    this.setState(state => ({
+      numQuestions: state.numQuestions + 1
+    }))
+  }
+
+
+  /*
    * checks to see if button true is correct
    * and then resets the equation for the next question
    */
   isTrue = () => {
     this.getActualAnswer() === this.state.proposedAnswer && this.addPoint();
+    this.addQuestionsAnswered();
     this.setEquationValues();
   }
 
@@ -212,6 +238,7 @@ class App extends Component {
    */
   isFalse = () => {
     this.getActualAnswer() !== this.state.proposedAnswer && this.addPoint();
+    this.addQuestionsAnswered();
     this.setEquationValues();
   }
 
