@@ -135,6 +135,8 @@ class App extends Component {
    * and then resets the equation for the next question
    */
   isTrue = () => {
+
+    // `===` has higher precedence than `&&`, so it will be calculated first
     this.getActualAnswer() === this.state.proposedAnswer && this.addPoint();
     this.addQuestionsAnswered();
     this.setEquationValues();
